@@ -1,0 +1,72 @@
+Logic (Intuition)
+To reverse a linked list, we reverse the direction of links one by one.
+
+We use three pointers:
+
+prev → previous node (initially null)
+
+curr → current node (starts at head)
+
+next → stores next node (to avoid losing the list)
+
+At each step:
+
+Save curr.next
+
+Point curr.next to prev
+
+Move prev and curr forward
+
+At the end, prev becomes the new head.
+
+//---------------------------------------------------------------
+
+Pseudocode
+reverseList(head):
+prev ← null
+curr ← head
+
+while curr is not null:
+    next ← curr.next
+    curr.next ← prev
+    prev ← curr
+    curr ← next
+
+return prev
+//--------------------------------------------------------------
+
+Time & Space Complexity
+Type Complexity
+Time Complexity O(n) – each node visited once
+Space Complexity O(1) – constant extra space
+
+Code
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.next = (next===undefined ? null : next)
+ * }
+ */
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var reverseList = function(head) {
+  let prev=null;
+
+  let curr=head;
+
+  while(curr!==null)
+  {
+    next=curr.next;
+
+    curr.next=prev;
+
+    prev=curr;
+
+    curr=next;
+  }  
+
+  return prev;
+};

@@ -1,0 +1,122 @@
+## ✅ Solution 1: Array + Two Pointers
+
+### **Approach**
+
+Since a singly linked list cannot be traversed backward, copy all node values into an array.
+Then use two pointers from both ends of the array to check if it is a palindrome.
+
+### **Pseudocode**
+
+```
+create empty array arr
+while head is not null
+    add head.val to arr
+    move head to next
+
+left = 0, right = arr.length - 1
+while left < right
+    if arr[left] != arr[right]
+        return false
+    left++, right--
+
+return true
+```
+
+### **JavaScript Code**
+
+```javascript
+var isPalindrome = function(head) {
+    let arr = [];
+
+    while (head) {
+        arr.push(head.val);
+        head = head.next;
+    }
+
+    let left = 0, right = arr.length - 1;
+    while (left < right) {
+        if (arr[left] !== arr[right]) return false;
+        left++;
+        right--;
+    }
+
+    return true;
+};
+```
+
+### **Complexity**
+
+* **Time:** `O(n)`
+* **Space:** `O(n)`
+
+---
+
+## ✅ Solution 2: Reverse Second Half (Optimal)
+
+### **Approach**
+
+Find the middle of the linked list, reverse the second half, then compare nodes from both halves.
+
+### **Pseudocode**
+
+```
+slow = head, fast = head
+while fast and fast.next
+    slow = slow.next
+    fast = fast.next.next
+
+reverse linked list from slow
+
+first = head, second = reversed list
+while second
+    if first.val != second.val
+        return false
+    move both pointers
+
+return true
+```
+
+### **JavaScript Code**
+
+```javascript
+var isPalindrome = function(head) {
+    let slow = head, fast = head;
+
+    // find middle
+    while (fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    // reverse second half
+    let prev = null;
+    while (slow) {
+        let next = slow.next;
+        slow.next = prev;
+        prev = slow;
+        slow = next;
+    }
+
+    // compare halves
+    let first = head, second = prev;
+    while (second) {
+        if (first.val !== second.val) return false;
+        first = first.next;
+        second = second.next;
+    }
+
+    return true;
+};
+```
+
+### **Complexity**
+
+* **Time:** `O(n)`
+* **Space:** `O(1)`
+
+---
+
+### ⭐ Interview Tip
+
+* **Use Solution 1** for clarity
+* **Use Solution 2** for follow-up (optimized space)

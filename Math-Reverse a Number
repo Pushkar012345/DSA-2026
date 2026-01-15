@@ -1,0 +1,90 @@
+https://leetcode.com/problems/reverse-integer/description/?envType=problem-list-v2&envId=math
+
+✅ Correct Approaches
+1️⃣ Brute Force Approach (Using String)
+Idea
+
+Convert number to string
+
+Reverse string
+
+Convert back to number
+
+Handle sign and overflow
+
+Pseudocode
+if x < 0:
+    sign = -1
+else:
+    sign = 1
+
+x = abs(x)
+reverse string of x
+result = sign * reversed number
+
+if result out of 32-bit range:
+    return 0
+return result
+
+JavaScript Code
+var reverse = function(x) {
+    let sign = x < 0 ? -1 : 1;
+    let rev = Number(String(Math.abs(x)).split('').reverse().join('')) * sign;
+
+    if (rev < -(2**31) || rev > (2**31 - 1)) return 0;
+    return rev;
+};
+
+Time & Space Complexity
+
+Time: O(n) (digits)
+
+Space: O(n)
+
+2️⃣ Better / Optimal Approach (Math – No String)
+Idea
+
+Extract last digit using % 10
+
+Build reversed number using multiplication
+
+Handle overflow during construction
+
+Pseudocode
+rev = 0
+while x != 0:
+    digit = x % 10
+    x = trunc(x / 10)
+    rev = rev * 10 + digit
+
+    if rev out of range:
+        return 0
+return rev
+
+JavaScript Code (Best Approach)
+var reverse = function(x) {
+    let rev = 0;
+
+    while (x !== 0) {
+        let digit = x % 10;
+        x = Math.trunc(x / 10);
+
+        rev = rev * 10 + digit;
+
+        if (rev < -(2**31) || rev > (2**31 - 1)) {
+            return 0;
+        }
+    }
+    return rev;
+};
+
+Time & Space Complexity
+
+Time: O(n)
+
+Space: O(1) ✅
+
+🔥 Summary
+Approach	Uses String	Space	Recommended
+Brute Force	Yes	O(n)	❌
+Math Based	No	O(1)	✅ Best

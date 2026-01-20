@@ -1,0 +1,27 @@
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var minBitwiseArray = function(nums) {
+    
+    let ans=[];
+
+    for(let n of nums)
+    {
+        //even nos not possible
+
+        if((n&1)===0)
+        {
+            ans.push(-1);
+            continue;
+        }
+
+        //find leftmost trailing ones
+        let z=((n+1) & (~n))>>1;
+
+        let x= n & (~z);
+
+        ans.push(x);
+    }
+    return ans;
+};

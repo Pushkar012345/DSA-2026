@@ -1,0 +1,33 @@
+Link:- https://leetcode.com/problems/construct-the-minimum-bitwise-array-ii/
+
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var minBitwiseArray = function(nums) {
+    let ans=new Array(nums.length);
+
+    for(let i=0;i<nums.length;i++)
+    {
+        let num=nums[i];
+
+        if(nums[i]===2)
+        {
+            ans[i]=-1;
+            continue;
+        }
+
+        let numCopy=num;
+        let count=0;
+
+        while((num & 1)===1)
+        {
+            count++;
+            num>>=1;
+        }
+
+        ans[i]=numCopy-(1<<(count-1));
+    }
+
+    return ans;
+};

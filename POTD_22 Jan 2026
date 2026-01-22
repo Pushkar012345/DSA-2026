@@ -1,0 +1,39 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minimumPairRemoval = function(nums) {
+
+    // Function to check if array is non-decreasing
+    function isNonDecreasing(arr) {
+        for (let i = 1; i < arr.length; i++) {
+            if (arr[i] < arr[i - 1]) return false; // violation found
+        }
+        return true; // array is non-decreasing
+    }
+
+    let operations = 0; // count of operations
+
+    // Repeat until array becomes non-decreasing
+    while (!isNonDecreasing(nums)) {
+
+        let minSum = Infinity; // store minimum adjacent sum
+        let idx = 0;          // index of left element of the pair
+
+        // Find leftmost adjacent pair with minimum sum
+        for (let i = 0; i < nums.length - 1; i++) {
+            let sum = nums[i] + nums[i + 1];
+            if (sum < minSum) {
+                minSum = sum;
+                idx = i;
+            }
+        }
+
+        // Replace the chosen pair with their sum
+        nums.splice(idx, 2, minSum);
+
+        operations++; // increment operation count
+    }
+
+    return operations; // return total operations
+};

@@ -1,0 +1,143 @@
+🔍 Problem Restated (Simple Words)
+
+You’re given an even-length array nums.
+
+Your task:
+
+Pair all numbers (each number used once)
+
+Compute sum of each pair
+
+Look at the maximum pair sum
+
+Minimize that maximum value
+
+Return that minimized maximum pair sum.
+
+🧠 Key Insight (Greedy Logic)
+
+To minimize the maximum pair sum, you must balance pairs.
+
+👉 Pair smallest with largest, second smallest with second largest, and so on.
+
+Why?
+
+Pairing large numbers together creates a huge sum
+
+Pairing large with small balances the load
+
+This strategy keeps the maximum sum as low as possible
+
+This is a classic Greedy + Two Pointers problem.
+
+✅ Optimal Approach: Sort + Two Pointers
+🚀 Approach Steps
+
+Sort the array in ascending order
+
+Use two pointers:
+
+left → start (smallest)
+
+right → end (largest)
+
+Pair nums[left] + nums[right]
+
+Track the maximum pair sum
+
+Move pointers inward
+
+Return the maximum found
+
+✏️ Dry Run Example
+Example 1
+
+Input: [3,5,2,3]
+
+Sorted → [2,3,3,5]
+
+Pair	Sum
+2 + 5	7
+3 + 3	6
+
+👉 Maximum = 7 ✅
+
+Example 2
+
+Input: [3,5,4,2,4,6]
+
+Sorted → [2,3,4,4,5,6]
+
+Pair	Sum
+2 + 6	8
+3 + 5	8
+4 + 4	8
+
+👉 Maximum = 8 ✅
+
+💡 Why This Works (Greedy Proof)
+
+Any other pairing creates larger imbalance
+
+Small + Large pairing ensures:
+
+Largest number is kept in check
+
+No pair sum explodes unnecessarily
+
+Hence, this strategy guarantees the minimum possible maximum sum
+
+🧑‍💻 JavaScript Code (Clean & Interview-Ready)
+var minPairSum = function(nums) {
+    // Step 1: Sort the array
+    nums.sort((a, b) => a - b);
+
+    let left = 0;
+    let right = nums.length - 1;
+    let maxPairSum = 0;
+
+    // Step 2: Pair smallest with largest
+    while (left < right) {
+        let currentSum = nums[left] + nums[right];
+        maxPairSum = Math.max(maxPairSum, currentSum);
+        left++;
+        right--;
+    }
+
+    return maxPairSum;
+};
+
+⏱️ Time & Space Complexity
+🕒 Time Complexity
+
+Sorting: O(n log n)
+
+Two-pointer traversal: O(n)
+✅ Overall: O(n log n)
+
+🧠 Space Complexity
+
+Sorting done in-place
+
+Only variables used
+✅ O(1) (constant space)
+
+🔥 Interview Tip
+
+If interviewer asks:
+
+“Why not pair largest together?”
+
+Answer:
+
+Pairing largest together increases the maximum sum. Pairing smallest with largest balances each pair and guarantees the minimum possible maximum.
+
+If you want:
+
+Frequency-count O(n) solution
+
+Proof explanation
+
+LeetCode-style explanation
+
+Diagram-based intuition

@@ -1,0 +1,107 @@
+
+---
+
+## 💡 Key Idea / Intuition
+
+To **minimize (max − min)** among `k` selected students:
+
+* The **best group of k scores** will be **close to each other**
+* Sorting helps bring similar values together
+* After sorting, we only need to check **every consecutive window of size `k`**
+
+Why?
+Because in a sorted array, the minimum difference for any `k` elements will always occur among **consecutive elements**.
+
+---
+
+## 🧠 Step-by-Step Approach
+
+1. **Sort** the array `nums` in ascending order
+2. Initialize `minDiff = Infinity`
+3. Slide a window of size `k`:
+
+   * For each window starting at index `i`
+   * Difference = `nums[i + k - 1] - nums[i]`
+   * Update `minDiff`
+4. Return `minDiff`
+
+---
+
+## ✅ Edge Case
+
+* If `k === 1` → difference is always `0` (same element)
+
+---
+
+## ✨ JavaScript Code
+
+```javascript
+var minimumDifference = function(nums, k) {
+    // If only one student is selected, difference is 0
+    if (k === 1) return 0;
+
+    // Step 1: Sort the array
+    nums.sort((a, b) => a - b);
+
+    let minDiff = Infinity;
+
+    // Step 2: Sliding window of size k
+    for (let i = 0; i + k - 1 < nums.length; i++) {
+        let diff = nums[i + k - 1] - nums[i];
+        minDiff = Math.min(minDiff, diff);
+    }
+
+    return minDiff;
+};
+```
+
+---
+
+## 🧪 Example Walkthrough
+
+### Input
+
+```
+nums = [9,4,1,7], k = 2
+```
+
+### After Sorting
+
+```
+[1, 4, 7, 9]
+```
+
+### Window Checks
+
+| Window | Difference |
+| ------ | ---------- |
+| [1,4]  | 3          |
+| [4,7]  | 3          |
+| [7,9]  | 2 ✅        |
+
+**Answer = 2**
+
+---
+
+## ⏱️ Time Complexity
+
+* Sorting: **O(n log n)**
+* Sliding window: **O(n)**
+  ✅ **Overall: O(n log n)**
+
+---
+
+## 💾 Space Complexity
+
+* Sorting uses **O(1)** extra space (in-place, ignoring sort internals)
+
+---
+
+## 🔥 Final Takeaway
+
+* Sorting + sliding window = optimal
+* Clean, readable, and efficient
+* Very common **interview favorite**
+
+n
+* Optimized explanation for interv

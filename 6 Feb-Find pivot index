@@ -1,0 +1,34 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var pivotIndex = function(nums) {
+    let n=nums.length;
+
+    let totalSum=0;
+    let remainingSum=0;
+    let currentSum=0;
+
+    for(let i=0;i<n;i++)
+    {
+        totalSum+=nums[i];
+    }
+
+    for(let j=0;j<n;j++)
+    {
+       let rightSum=totalSum-currentSum-nums[j];
+       
+
+       if(currentSum===rightSum)
+       {
+        return j;
+       }
+       
+       currentSum+=nums[j];
+    }
+
+    return -1;
+
+
+     
+};

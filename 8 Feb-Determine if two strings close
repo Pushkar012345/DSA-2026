@@ -1,0 +1,30 @@
+/**
+ * @param {string} word1
+ * @param {string} word2
+ * @return {boolean}
+ */
+var closeStrings = function(word1, word2) {
+    let occurances1 = new Array(26).fill(0);
+    let occurances2 = new Array(26).fill(0);
+    for (let i = 0; i < Math.max(word1.length, word2.length); i++) {
+        if (word1.at(i))
+            occurances1[word1.at(i).charCodeAt(0) - 'a'.charCodeAt(0)]++;
+        if (word2.at(i))
+            occurances2[word2.at(i).charCodeAt(0) - 'a'.charCodeAt(0)]++;
+    }
+
+    for (let i = 0; i < 26; i++) {
+        if (occurances1[i] === 0 && occurances2[i] !== 0 ||
+            occurances1[i] !== 0 && occurances2[i] === 0) {
+            return false;
+        }
+    }
+
+    occurances1 = occurances1.sort((a, b) => a - b);
+    occurances2 = occurances2.sort((a, b) => a - b);
+    for (let i = 0; i < 26; i++) if (occurances1[i] !== occurances2[i]) {
+        return false;
+    }
+
+    return true; // :^)
+};

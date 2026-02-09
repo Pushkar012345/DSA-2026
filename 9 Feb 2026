@@ -1,0 +1,36 @@
+/**
+ * @param {number[][]} grid
+ * @return {number}
+ */
+var equalPairs = function(grid) {
+    
+};/**
+ * @param {number[][]} grid
+ * @return {number}
+ * 
+ * This function counts the number of pairs (row, column) in the given n x n grid
+ * such that the row and column contain the exact same elements in the same order.
+ */
+var equalPairs = function(grid) {
+    const n = grid.length; // Size of the grid (n x n)
+    let count = 0;          // Initialize counter for matching row-column pairs
+    const rows = new Map(); // Map to store rows as keys and their frequency as values
+
+    // Step 1: Store all rows in the Map
+    // Convert each row to a string so it can be used as a key in the Map
+    for (let r = 0; r < n; r++) {
+        const rowKey = JSON.stringify(grid[r]);       // Convert row array to string
+        rows.set(rowKey, (rows.get(rowKey) || 0) + 1); // Increment frequency if row already exists
+    }
+
+    // Step 2: Iterate through each column to check for matches
+    for (let c = 0; c < n; c++) {
+        // Extract the current column as an array and convert to string
+        const colKey = JSON.stringify(grid.map(row => row[c])); 
+        // If this column exists in the rows Map, add its frequency to count
+        count += rows.get(colKey) || 0;
+    }
+
+    // Step 3: Return the total number of matching row-column pairs
+    return count; 
+};

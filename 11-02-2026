@@ -1,0 +1,77 @@
+/**
+ * @param {number[]} asteroids
+ * @return {number[]}
+ */
+/**
+ * @param {number[]} asteroids
+ * @return {number[]}
+ */
+var asteroidCollision = function(asteroids) {
+    
+    // This will act as a stack to store surviving asteroids
+    const res = []
+    
+    // Traverse each asteroid
+    for (let i = 0; i < asteroids.length; i++) {
+        
+        // Last asteroid in stack (top element)
+        const last = res[res.length - 1]
+        
+        // Current asteroid
+        const cur = asteroids[i]
+        
+        /*
+        CASE 1: No collision possible
+        --------------------------------
+        Collision only happens when:
+        - last asteroid is moving right (positive)
+        - current asteroid is moving left (negative)
+        
+        So we safely push when:
+        - stack is empty
+        - last asteroid is moving left (last < 0)
+        - current asteroid is moving right (cur > 0)
+        */
+        if (!res.length || last < 0 || cur > 0) {
+            res.push(cur)
+        }
+        
+        /*
+        CASE 2: Both have same size
+        --------------------------------
+        If magnitudes are equal,
+        both asteroids destroy each other.
+        So remove the last asteroid.
+        Do NOT push current asteroid.
+        */
+        else if (-cur == last) {
+            res.pop()
+        }
+        
+        /*
+        CASE 3: Current asteroid is bigger
+        --------------------------------
+        If |cur| > last,
+        current asteroid destroys the last asteroid.
+        Remove last asteroid.
+        
+        i-- is used to reprocess the current asteroid
+        because it may collide again with new top.
+        */
+        else if (-cur > last) {
+            res.pop()
+            i--   // recheck current asteroid with new stack top
+        }
+        
+        /*
+        CASE 4: Current asteroid is smaller
+        --------------------------------
+        If |cur| < last,
+        current asteroid gets destroyed.
+        Do nothing (do not push it).
+        */
+    }
+    
+    // Remaining asteroids in stack are survivors
+    return res  
+};

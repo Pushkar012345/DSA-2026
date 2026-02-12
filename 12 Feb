@@ -1,0 +1,47 @@
+const decodeString = s => {
+  // Stack to store characters and intermediate results
+  const stack = [];
+
+  // Traverse each character of the string
+  for (const char of s) {
+
+    // If current character is NOT closing bracket,
+    // just push it into stack
+    if (char !== "]") { 
+      stack.push(char); 
+      continue; 
+    }
+
+    // If we find ']', it means we need to decode
+
+    // Step 1: Build the string inside brackets
+    let cur = stack.pop();
+    let str = '';
+
+    // Keep popping until '[' is found
+    while (cur !== '[') {
+      str = cur + str;   // build string in correct order
+      cur = stack.pop();
+    }
+
+    // Step 2: Get the number (repeat count)
+    let num = '';
+    cur = stack.pop();
+
+    // Digits may be more than one (like 12[a])
+    while (!Number.isNaN(Number(cur))) {
+      num = cur + num;   // build number correctly
+      cur = stack.pop();
+    }
+
+    // We popped one extra character that is not a digit
+    // so push it back to stack
+    stack.push(cur);
+
+    // Step 3: Repeat string and push back to stack
+    stack.push(str.repeat(Number(num)));
+  }
+
+  // Join everything left in stack
+  return stack.join('');
+};

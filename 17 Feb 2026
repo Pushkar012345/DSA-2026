@@ -1,0 +1,190 @@
+## 🗑️ Delete Middle Node of Linked List
+
+**Two Pointer Approach | Beginner Friendly | Dry Run | O(n) Time | O(1) Space**
+
+---
+
+# ✅ Intuition 👈
+
+We are given a **singly linked list**, and we need to **remove the middle node**.
+
+* If the list length is **odd** → remove the exact middle node.
+* If the list length is **even** → remove the **first middle node** (as per this approach).
+
+To do this efficiently in **one traversal**, we use the **Two Pointer (Fast & Slow) Technique**.
+
+---
+
+# 🚀 Approach (Two Pointer Technique) 👈
+
+### 🔹 Key Idea
+
+* Use two pointers:
+
+  * `slow` → moves **1 step**
+  * `fast` → moves **2 steps**
+
+By the time `fast` reaches the end:
+
+* `slow` will be **just before the middle node**
+
+So we can easily remove the middle node by:
+
+```
+slow.next = slow.next.next
+```
+
+---
+
+### 🔹 Why Dummy Node?
+
+We create a **dummy node (`prev`)** before `head` because:
+
+* It helps handle edge cases easily.
+* Especially when list has only 1 node.
+* Avoids special handling for deleting first node.
+
+---
+
+# 💻 JavaScript Code (Clean & Proper)
+
+```javascript
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val, next) {
+ *     this.val = (val === undefined ? 0 : val)
+ *     this.next = (next === undefined ? null : next)
+ * }
+ */
+
+/**
+ * @param {ListNode} head
+ * @return {ListNode}
+ */
+var deleteMiddle = function(head) {
+    
+    // Base Case: If list is empty or has only one node
+    if (head === null || head.next === null) {
+        return null;
+    }
+
+    // Create dummy node
+    let prev = new ListNode(0);
+    prev.next = head;
+
+    let slow = prev;
+    let fast = head;
+
+    // Move fast by 2 steps and slow by 1 step
+    while (fast !== null && fast.next !== null) {
+        slow = slow.next;
+        fast = fast.next.next;
+    }
+
+    // Remove middle node
+    slow.next = slow.next.next;
+
+    return prev.next;
+};
+```
+
+---
+
+# 🧪 Dry Run 👈
+
+### Example List:
+
+```
+1 → 3 → 4 → 7 → 1 → 2 → 6
+```
+
+---
+
+### 🔹 Step 1: Initialization
+
+```
+prev → 0(dummy)
+         ↓
+1 → 3 → 4 → 7 → 1 → 2 → 6
+```
+
+* `slow = prev`
+* `fast = head (1)`
+
+---
+
+### 🔹 Step 2: Iterations
+
+| Iteration | slow moves to            | fast moves to |
+| --------- | ------------------------ | ------------- |
+| 1st       | 1                        | 4             |
+| 2nd       | 3                        | 1             |
+| 3rd       | 4                        | 6             |
+| Next      | fast becomes null → stop |               |
+
+Now:
+
+```
+slow → 4
+slow.next → 7 (Middle Node)
+```
+
+---
+
+### 🔹 Step 3: Delete Middle
+
+```
+slow.next = slow.next.next
+```
+
+So:
+
+```
+4 → 1
+```
+
+New List:
+
+```
+1 → 3 → 4 → 1 → 2 → 6
+```
+
+✅ Middle node (7) removed.
+
+---
+
+# ⏱ Time Complexity 👈
+
+* We traverse the list **only once**
+* Each node visited at most once
+
+👉 **Time Complexity = O(n)**
+
+---
+
+# 🧠 Space Complexity 👈
+
+* No extra data structure used
+* Only few pointers
+
+👉 **Space Complexity = O(1)**
+
+---
+
+# 🎯 Why This is Efficient?
+
+✔ Single traversal
+✔ No extra memory
+✔ Handles edge cases
+✔ Clean & readable
+
+---
+
+If you want, I can also give:
+
+* 🔥 Without Dummy Node version
+* 🔥 For deleting second middle node
+* 🔥 Step-by-step pointer diagram visualization
+* 🔥 Interview explanation format
+
+Just tell me 🚀

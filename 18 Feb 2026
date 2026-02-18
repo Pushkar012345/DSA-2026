@@ -1,0 +1,157 @@
+## Odd-Even Linked List (In-Place Reordering)
+
+### 🧠 Intuition
+
+We are given a singly linked list and need to:
+
+* Group all **odd index nodes** together
+* Followed by all **even index nodes**
+
+👉 Important:
+
+* Indexing is **1-based** (not 0-based).
+* We must **rearrange nodes**, not values.
+* No extra space allowed — only pointer manipulation.
+
+Instead of creating new lists, we can:
+
+* Maintain two pointers:
+
+  * `odd` → tracks odd-indexed nodes
+  * `even` → tracks even-indexed nodes
+* Rearrange the `next` pointers in one traversal.
+
+---
+
+### 🚀 Approach (Step-by-Step)
+
+1. **Edge Case Check**
+
+   * If list is empty or has only one node → return head.
+
+2. **Initialize Pointers**
+
+   * `odd = head`
+   * `even = head.next`
+   * Store `evenHead = even` (so we can attach even list later)
+
+3. **Traverse the List**
+
+   * While `even` and `even.next` exist:
+
+     * Connect odd to next odd → `odd.next = even.next`
+     * Move odd forward → `odd = odd.next`
+     * Connect even to next even → `even.next = odd.next`
+     * Move even forward → `even = even.next`
+
+4. **Attach Even List**
+
+   * After loop ends, connect last odd node to `evenHead`
+
+---
+
+### 🔁 Dry Run Example
+
+Input:
+
+```
+1 → 2 → 3 → 4 → 5
+```
+
+Initial:
+
+```
+odd = 1
+even = 2
+evenHead = 2
+```
+
+### Iteration 1:
+
+```
+odd.next = 3
+odd = 3
+
+even.next = 4
+even = 4
+```
+
+List now:
+
+```
+1 → 3 → 4 → 5
+2 → 4
+```
+
+### Iteration 2:
+
+```
+odd.next = 5
+odd = 5
+
+even.next = null
+even = null
+```
+
+Final Step:
+
+```
+5.next = 2
+```
+
+Final Output:
+
+```
+1 → 3 → 5 → 2 → 4
+```
+
+---
+
+### ⏱ Complexity Analysis
+
+* **Time Complexity:** `O(n)`
+  → Single traversal of the list.
+
+* **Space Complexity:** `O(1)`
+  → Only pointer variables used.
+
+---
+
+### 💻 Clean JavaScript Code
+
+```javascript
+function oddEvenList(head) {
+    // Edge case: empty list or single node
+    if (!head || !head.next) return head;
+
+    let odd = head;              // Start of odd list
+    let even = head.next;        // Start of even list
+    const evenHead = even;       // Store even list head
+
+    // Rearrange nodes
+    while (even && even.next) {
+        odd.next = even.next;    // Link odd to next odd
+        odd = odd.next;          // Move odd pointer
+
+        even.next = odd.next;    // Link even to next even
+        even = even.next;        // Move even pointer
+    }
+
+    // Attach even list at the end of odd list
+    odd.next = evenHead;
+
+    return head;
+}
+```
+
+---
+
+### 🎯 Why This Is Clean
+
+✔ No extra data structures
+✔ No dummy nodes
+✔ Only pointer rewiring
+✔ Single pass solution
+
+This is one of the most elegant pointer manipulation tricks in Linked List problems.
+

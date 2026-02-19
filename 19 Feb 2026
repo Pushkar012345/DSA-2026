@@ -1,0 +1,192 @@
+## 🔁 206. Reverse Linked List – Proper Approach (JavaScript)
+
+This is a **classic linked list problem** where we reverse the direction of pointers.
+
+---
+
+## 🧠 Intuition
+
+Given:
+
+```
+1 → 2 → 3 → null
+```
+
+We want:
+
+```
+3 → 2 → 1 → null
+```
+
+Instead of creating a new list, we **reverse links one by one**.
+
+We maintain 3 pointers:
+
+* `node` → Previous node (initially `null`)
+* `head` → Current node
+* `temp` → Next node (to avoid losing reference)
+
+---
+
+## 🪜 Step-by-Step Algorithm
+
+### ✅ Step 1: Initialize
+
+```js
+let node = null;
+```
+
+This will become the new head of the reversed list.
+
+---
+
+### ✅ Step 2: Traverse & Reverse
+
+While `head` is not null:
+
+1. Store next node
+   `temp = head.next`
+
+2. Reverse pointer
+   `head.next = node`
+
+3. Move `node` forward
+   `node = head`
+
+4. Move `head` forward
+   `head = temp`
+
+---
+
+## 🔍 Dry Run Example
+
+### Initial State
+
+```
+node = null
+head = 1 → 2 → 3 → null
+```
+
+---
+
+### 🔹 Iteration 1
+
+* `temp = 2`
+* `1.next = null`
+* `node = 1`
+* `head = 2`
+
+Now:
+
+```
+1 → null
+2 → 3 → null
+```
+
+---
+
+### 🔹 Iteration 2
+
+* `temp = 3`
+* `2.next = 1`
+* `node = 2`
+* `head = 3`
+
+Now:
+
+```
+2 → 1 → null
+3 → null
+```
+
+---
+
+### 🔹 Iteration 3
+
+* `temp = null`
+* `3.next = 2`
+* `node = 3`
+* `head = null`
+
+Now:
+
+```
+3 → 2 → 1 → null
+```
+
+Loop stops because `head = null`.
+
+Return `node`.
+
+---
+
+## 💻 JavaScript Code (Iterative – Optimal)
+
+```javascript
+var reverseList = function(head) {
+    let node = null;   // Previous node
+    
+    while (head) {
+        const temp = head.next; // Step 1: store next
+        head.next = node;       // Step 2: reverse link
+        node = head;            // Step 3: move previous
+        head = temp;            // Step 4: move current
+    }
+    
+    return node; // New head
+};
+```
+
+---
+
+## ⏱ Complexity
+
+* **Time Complexity:** O(n)
+  → We traverse each node once.
+
+* **Space Complexity:** O(1)
+  → No extra space used (only pointers).
+
+---
+
+# 🔁 Recursive Solution (Alternative)
+
+### 💡 Idea
+
+Reverse the rest of the list first, then fix current node.
+
+---
+
+## 💻 JavaScript Recursive Code
+
+```javascript
+var reverseList = function(head) {
+    if (!head || !head.next) return head;
+    
+    let newHead = reverseList(head.next);
+    
+    head.next.next = head;
+    head.next = null;
+    
+    return newHead;
+};
+```
+
+---
+
+## ⏱ Recursive Complexity
+
+* **Time:** O(n)
+* **Space:** O(n) (due to recursion stack)
+
+---
+
+# 🏆 Key Takeaways
+
+✔ Always store `next` before breaking link
+✔ Reverse pointer
+✔ Move previous & current
+✔ Iterative = best for interviews (O(1) space)
+
+---
+

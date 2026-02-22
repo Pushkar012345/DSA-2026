@@ -1,0 +1,51 @@
+Here is the **JavaScript code with proper comments (clean & interview ready)**:
+
+```javascript
+var leafSimilar = function(root1, root2) {
+
+    // Helper DFS function to collect leaf nodes
+    const dfs = (node, leaves) => {
+        
+        // Base case: if node is null, stop recursion
+        if (!node) return;
+        
+        // If node is a leaf (no left & no right child)
+        if (!node.left && !node.right) {
+            leaves.push(node.val);   // Add leaf value to array
+        }
+        
+        // Traverse left subtree
+        dfs(node.left, leaves);
+        
+        // Traverse right subtree
+        dfs(node.right, leaves);
+    };
+
+    // Arrays to store leaf sequences of both trees
+    const leaves1 = [];
+    const leaves2 = [];
+
+    // Collect leaves from first tree
+    dfs(root1, leaves1);
+
+    // Collect leaves from second tree
+    dfs(root2, leaves2);
+
+    // Compare both leaf sequences
+    return leaves1.length === leaves2.length &&
+           leaves1.every((val, i) => val === leaves2[i]);
+};
+```
+
+---
+
+### 🔥 What’s Happening?
+
+1. Traverse both trees using **DFS**.
+2. Store only **leaf node values**.
+3. Compare both arrays.
+4. If same → return `true`, else `false`.
+
+---
+
+If you want, I can also give **iterative stack version** (sometimes interviewer prefers non-recursive).

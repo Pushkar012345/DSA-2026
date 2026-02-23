@@ -1,0 +1,34 @@
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val, left, right) {
+ *     this.val = (val===undefined ? 0 : val)
+ *     this.left = (left===undefined ? null : left)
+ *     this.right
+ ***/
+
+function TreeNode(val, left = null, right = null) {
+    this.val = val;
+    this.left = left;
+    this.right = right;
+}
+
+var goodNodes = function (root) {
+    // DFS helper: returns number of good nodes in this subtree
+    const dfs = (node, maxSoFar) => {
+        if (!node) return 0; // null node → 0 good nodes
+
+        // check if current node is good
+        let count = node.val >= maxSoFar ? 1 : 0;
+
+        // update max for children
+        const newMax = Math.max(maxSoFar, node.val);
+
+        // count good nodes in left and right subtrees
+        count += dfs(node.left, newMax);
+        count += dfs(node.right, newMax);
+
+        return count;
+    };
+
+    return dfs(root, root.val); // start DFS from root
+};

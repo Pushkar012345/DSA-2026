@@ -1,0 +1,81 @@
+### 🚀 Approach (Greedy + Two Pointers Insight)
+
+The goal is to **maximize distance |i - j| such that colors[i] ≠ colors[j]**.
+
+👉 Key observation:
+
+* Maximum distance always comes from **edges (0 or n-1)**.
+* So instead of checking all pairs (O(n²)), we optimize.
+
+---
+
+### 💡 Idea
+
+1. Compare **leftmost house (index 0)** with others from the right:
+
+   * Find the **farthest index j** where `colors[j] ≠ colors[0]`
+   * Distance = `j - 0`
+
+2. Compare **rightmost house (index n-1)** with others from the left:
+
+   * Find the **smallest index i** where `colors[i] ≠ colors[n-1]`
+   * Distance = `(n-1) - i`
+
+3. Return the **maximum of both**
+
+---
+
+### ⚡ Optimized Single Loop
+
+We can do both checks in one loop.
+
+---
+
+### ✅ JavaScript Code
+
+```javascript
+/**
+ * @param {number[]} colors
+ * @return {number}
+ */
+var maxDistance = function(colors) {
+    let n = colors.length;
+    let ans = 0;
+
+    for (let i = 0; i < n; i++) {
+        // Compare with left end
+        if (colors[i] !== colors[0]) {
+            ans = Math.max(ans, i);
+        }
+
+        // Compare with right end
+        if (colors[i] !== colors[n - 1]) {
+            ans = Math.max(ans, n - 1 - i);
+        }
+    }
+
+    return ans;
+};
+```
+
+---
+
+### ⏱ Time & Space Complexity
+
+* **Time Complexity:** `O(n)`
+  (single pass through array)
+
+* **Space Complexity:** `O(1)`
+  (no extra space used)
+
+---
+
+### 🧠 Why This Works
+
+* Farthest distance always involves **one endpoint**
+* First mismatch from either side gives **maximum possible stretch**
+* Avoids unnecessary pair comparisons → efficient
+
+---
+
+If you want, I can also show the **brute force → optimized transition** (helps in interviews).

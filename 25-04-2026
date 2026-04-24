@@ -1,0 +1,50 @@
+0ms | Beats 100.00% 👏 || Easy Approach and Step-by-Step Breakdown 💯🔥
+
+Md Aarzoo Islam
+1000 Days Badge
+288
+17 hours ago
+String
+Counting
+C++
+Java
+
+3+
+image.png
+
+Approach
+Here’s how I solved it step-by-step:
+
+Count:
+
+left → number of 'L'
+right → number of 'R'
+blank → number of '_'
+Compute current position:
+
+position = right - left
+To maximize distance:
+
+If position is positive → go more right
+If negative → go more left
+So I add all _ moves to the absolute position
+Final answer:
+
+abs(position) + blank
+Code
+/**
+ * @param {string} moves
+ * @return {number}
+ */
+var furthestDistanceFromOrigin = function(moves) {
+    let left = 0, right = 0, blank = 0;
+
+    for (let c of moves) {
+        if (c === 'L') left++;
+        else if (c === 'R') right++;
+        else blank++;
+    }
+
+    let position = right - left;
+    return Math.abs(position) + blank;
+};

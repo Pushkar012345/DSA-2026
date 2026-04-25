@@ -1,0 +1,108 @@
+/**
+ * @param {number} side
+ * @param {number[][]} points
+ * @param {number} k
+ * @return {number}
+ */
+/**
+ * @param {number} side
+ * @param {number[][]} points
+ * @param {number} k
+ * @return {number}
+ */
+var maxDistance = function(side, points, k) {
+
+    // Step 1: Convert 2D boundary points → 1D positions on square perimeter
+    let res = points.map(([x, y]) => {
+        if (x === 0) 
+            return y;                     // Left edge
+        if (y === side) 
+            return side + x;              // Top edge
+        if (x === side) 
+            return side * 3 - y;          // Right edge
+        return side * 4 - x;              // Bottom edge
+    });
+
+    // Sort points along perimeter (important for greedy selection)
+    res.sort((a, b) => a - b);
+
+    const perimeter = side * 4; // total boundary length
+
+    // -------- Binary Search Helper --------
+    // Find first index where value >= target
+    const binarySearch = (arr, target) => {
+        let l = 0, r = arr.length;
+        while (l < r) {
+            let mid = Math.floor((l + r) / 2);
+            if (arr[mid] < target) 
+                l = mid + 1;
+            else 
+                r = mid;
+        }
+        return l; // first index >= target
+    };
+
+    // -------- Check Function --------
+    // Can we pick k points such that minimum distance >= n ?
+    const check = (n) => {
+        let m = res.length;
+
+        // idx[i] = index of i-th chosen point
+        let idx = new Array(k).fill(0);
+
+        // Greedy: start from first point
+        let curr = res[0];
+
+        // Pick remaining k-1 points
+        for (let i = 1; i < k; i++) {
+            // Find next point >= curr + n
+            let j = binarySearch(res, curr + n);
+
+            // If not found → not possible
+            if (j === m) return false;
+
+            idx[i] = j;
+            curr = res[j];
+        }
+
+        // Check circular condition:
+        // distance between last and first should also be >= n
+        if (res[idx[k - 1]] - res[0] <= perimeter - n)
+            return true;
+
+        // Try different starting points (shift window)
+        for (idx[0] = 1; idx[0] < idx[1]; idx[0]++) {
+
+            for (let j = 1; j < k; j++) {
+
+                // Move pointer forward until distance condition satisfied
+                while (idx[j] < m && res[idx[j]] < res[idx[j - 1]] + n) {
+                    idx[j]++;
+                }
+
+                // If we run out of points → fail
+                if (idx[j] === m) return false;
+            }
+
+            // Check circular condition again
+            if (res[idx[k - 1]] - res[idx[0]] <= perimeter - n)
+                return true;
+        }
+
+        return false;
+    };
+
+    // -------- Binary Search on Answer --------
+    let left = 1, right = Math.floor(perimeter / k) + 1;
+
+    while (left + 1 < right) {
+        let mid = Math.floor((left + right) / 2);
+
+        if (check(mid)) 
+            left = mid;     // possible → try bigger distance
+        else 
+            right = mid;    // not possible → reduce distance
+    }
+
+    return left; // maximum minimum distance
+};

@@ -1,0 +1,42 @@
+/**
+ * @param {number[]} nums
+ * @return {number[]}
+ */
+var maxValue = function(nums) {
+
+    const n = nums.length;
+
+    const pre = new Array(n);
+    const suf = new Array(n);
+    const res = new Array(n);
+
+    // prefix max
+    pre[0] = nums[0];
+
+    for (let i = 1; i < n; i++) {
+        pre[i] = Math.max(pre[i - 1], nums[i]);
+    }
+
+    // suffix min
+    suf[n - 1] = nums[n - 1];
+
+    for (let i = n - 2; i >= 0; i--) {
+        suf[i] = Math.min(suf[i + 1], nums[i]);
+    }
+
+    // last index
+    res[n - 1] = pre[n - 1];
+
+    // build answer
+    for (let i = n - 2; i >= 0; i--) {
+
+        // STRICT inequality
+        if (pre[i] > suf[i + 1]) {
+            res[i] = res[i + 1];
+        } else {
+            res[i] = pre[i];
+        }
+    }
+
+    return res;
+};

@@ -1,0 +1,104 @@
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+var minJumps = function(nums) {
+    const n = nums.length;
+
+    // If only one element, already at target
+    if (n === 1) return 0;
+
+    // -------------------------------
+    // 1. Build SPF (Smallest Prime Factor)
+    // This helps us factor numbers quickly
+    // -------------------------------
+    const maxVal = Math.max(...nums);
+    const spf = new Array(maxVal + 1).fill(0);
+
+    for (let i = 2; i <= maxVal; i++) {
+        if (spf[i] === 0) { // i is prime
+            for (let j = i; j <= maxVal; j += i) {
+                if (spf[j] === 0) spf[j] = i;
+            }
+        }
+    }
+
+    // Helper: check if a number is prime
+    const isPrime = (x) => x > 1 && spf[x] === x;
+
+    // -------------------------------
+    // 2. Build map: prime -> indices
+    // If nums[j] divisible by prime p → store j in map[p]
+    // -------------------------------
+    const primeMap = new Map();
+
+    for (let i = 0; i < n; i++) {
+        let x = nums[i];
+        const primes = new Set();
+
+        // Factorize x into unique prime factors
+        while (x > 1) {
+            const p = spf[x];
+            primes.add(p);
+            while (x % p === 0) x /= p;
+        }
+
+        // Store index i under each prime factor
+        for (const p of primes) {
+            if (!primeMap.has(p)) primeMap.set(p, []);
+            primeMap.get(p).push(i);
+        }
+    }
+
+    // -------------------------------
+    // 3. BFS setup
+    // -------------------------------
+    const queue = [0];        // start from index 0
+    const dist = new Array(n).fill(-1); // distance array
+    dist[0] = 0;
+
+    const usedPrimeTeleport = new Set(); // avoid reusing same prime teleport
+
+    let front = 0; // queue pointer (faster than shift)
+
+    // -------------------------------
+    // 4. BFS traversal
+    // -------------------------------
+    while (front < queue.length) {
+        const i = queue[front++];
+
+        // If reached last index, return answer
+        if (i === n - 1) return dist[i];
+
+        // -------------------------------
+        // (A) Move to adjacent nodes
+        // -------------------------------
+        for (const ni of [i - 1, i + 1]) {
+            if (ni >= 0 && ni < n && dist[ni] === -1) {
+                dist[ni] = dist[i] + 1;
+                queue.push(ni);
+            }
+        }
+
+        // -------------------------------
+        // (B) Prime teleportation
+        // -------------------------------
+        const val = nums[i];
+
+        // only if value is prime AND not used before
+        if (isPrime(val) && !usedPrimeTeleport.has(val)) {
+            usedPrimeTeleport.add(val);
+
+            const targets = primeMap.get(val) || [];
+
+            for (const j of targets) {
+                if (dist[j] === -1) {
+                    dist[j] = dist[i] + 1;
+                    queue.push(j);
+                }
+            }
+        }
+    }
+
+    return -1;
+};

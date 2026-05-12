@@ -1,0 +1,28 @@
+/**
+ * @param {number[][]} tasks
+ * @return {number}
+ */
+var minimumEffort = function(tasks) {
+
+    // sort by (minimum - actual) in descending order
+    tasks.sort((a, b) =>
+        (b[1] - b[0]) - (a[1] - a[0])
+    );
+
+    let ans = 0;
+    let energy = 0;
+
+    for (let [actual, minimum] of tasks) {
+
+        // increase energy if needed
+        if (energy < minimum) {
+            ans += (minimum - energy);
+            energy = minimum;
+        }
+
+        // perform current task
+        energy -= actual;
+    }
+
+    return ans;
+};

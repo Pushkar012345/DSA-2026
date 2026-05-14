@@ -1,0 +1,46 @@
+/**
+ * @param {number[]} nums
+ * @return {boolean}
+ */
+var isGood = function(nums) {
+    let n= nums.length;
+
+    let freq=new Array(n+1).fill(0);
+
+    //fill freq
+
+    for(let x of nums)
+    {
+        if(x>n-1)
+        {
+            return false;
+        }
+
+        freq[x]++;
+    }
+
+    //Nos fron 1 to n-2 appear twice
+    for(let i=1;i<=n-2;i++)
+    {
+        if(freq[i]!=1)
+        {
+            return false;
+        }
+
+        
+
+    }
+     
+    return freq[n-1]===2;
+};
+
+
+
+
+
+
+
+
+
+
+

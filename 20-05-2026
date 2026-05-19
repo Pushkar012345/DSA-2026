@@ -1,23 +1,83 @@
-/**
- * @param {number[]} nums1
- * @param {number[]} nums2
- * @return {number}
- */
-var getCommon = function(nums1, nums2) {
-    let set=new Set();
+Two Pointers + Hash Set Solution | Easy Explanation 🚀
 
-    for(let num of nums1)
-    {
-        set.add(num);
-    }
+ronak prajapati
+365 Days Badge
+477
+16 hours ago
+Array
+Hash Table
+Two Pointers
+Python
 
-    for(let num of nums2)
-    {
-        if(set.has(num))
-        {
-            return num;
+3+
+Intuition
+Since both arrays are sorted, we can use two pointers and compare elements one by one.
+
+If both elements are equal → common element found.
+If nums1[i] < nums2[j], move i because smaller values cannot match later.
+Otherwise move j.
+This avoids checking every pair and efficiently finds the first common element.
+
+Approach
+Initialize two pointers i = 0 and j = 0.
+Traverse both arrays while pointers are inside bounds:
+If nums1[i] == nums2[j], return that value.
+If nums1[i] < nums2[j], increment i.
+Else increment j.
+If traversal ends without a match, return -1.
+Complexity
+Time complexity:
+O(n+m)
+
+Space complexity:
+O(1)
+
+Code
+class Solution {
+    public int getCommon(int[] nums1, int[] nums2) {
+        int i = 0, j = 0;
+
+        while(i < nums1.length && j < nums2.length) {
+            if(nums1[i] == nums2[j]) return nums1[i];
+
+            if(nums1[i] < nums2[j]) i++;
+            else j++;
         }
-    }
 
-    return -1;
-};
+        return -1;
+    }
+}
+method 2: : Hash Set Approach
+Intuition
+Instead of comparing elements one by one, we can store all elements of nums1 in an unordered_set for fast lookup.
+
+Then traverse nums2 and check whether the current element exists in the set.
+
+If found, return that element as the common value.
+
+Approach
+Create an unordered_set.
+Insert all elements of nums1 into the set.
+Traverse nums2:
+If current element exists in the set, return it.
+If no common element is found, return -1.
+Complexity
+Time complexity:O(n+m)
+
+Space complexity:O(n)
+
+class Solution {
+    public int getCommon(int[] nums1, int[] nums2) {
+        HashSet<Integer> set = new HashSet<>();
+
+        for(int num : nums1)
+            set.add(num);
+
+        for(int num : nums2) {
+            if(set.contains(num))
+                return num;
+        }
+
+        return -1;
+    }
+}

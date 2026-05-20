@@ -1,0 +1,74 @@
+# Quick Revision
+
+## Idea
+
+Use frequency array to track occurrences of numbers from both arrays.
+
+When frequency of a number becomes `2`, it means:
+
+* appeared once in `A`
+* appeared once in `B`
+
+So it becomes a common element.
+
+---
+
+# Steps
+
+1. Create `freq` array of size `n + 1`
+2. Traverse both arrays together
+3. Increase frequency of `A[i]`
+4. If frequency becomes `2` → `cnt++`
+5. Increase frequency of `B[i]`
+6. If frequency becomes `2` → `cnt++`
+7. Store `cnt` in answer array
+
+---
+
+# JavaScript Code
+
+```javascript id="9u44v9"
+/**
+ * @param {number[]} A
+ * @param {number[]} B
+ * @return {number[]}
+ */
+var findThePrefixCommonArray = function(A, B) {
+
+    let n = A.length;
+
+    let freq = new Array(n + 1).fill(0);
+    let ans = new Array(n);
+
+    let cnt = 0;
+
+    for(let i = 0; i < n; i++) {
+
+        freq[A[i]]++;
+        if(freq[A[i]] === 2) cnt++;
+
+        freq[B[i]]++;
+        if(freq[B[i]] === 2) cnt++;
+
+        ans[i] = cnt;
+    }
+
+    return ans;
+};
+```
+
+---
+
+# Time Complexity
+
+```text id="yb80rl"
+O(n)
+```
+
+---
+
+# Space Complexity
+
+```text id="3n9x3m"
+O(n)
+```

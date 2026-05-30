@@ -1,0 +1,145 @@
+## Approach (Binary Search)
+
+1. Sort the `potions` array.
+2. For each spell:
+
+   * Find the minimum potion strength required:
+
+     [
+     need = \left\lceil \frac{success}{spell} \right\rceil
+     ]
+
+     In code:
+
+     ```js
+     Math.ceil(success / spell)
+     ```
+   * Use binary search to find the first potion `>= need`.
+   * All potions from that index to the end will form successful pairs.
+   * Count = `m - index`.
+
+---
+
+## JavaScript Code
+
+```javascript
+var successfulPairs = function(spells, potions, success) {
+    potions.sort((a, b) => a - b);
+
+    const m = potions.length;
+    const ans = [];
+
+    for (let spell of spells) {
+        let need = Math.ceil(success / spell);
+
+        let left = 0, right = m - 1;
+        let idx = m;
+
+        while (left <= right) {
+            let mid = Math.floor((left + right) / 2);
+
+            if (potions[mid] >= need) {
+                idx = mid;
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        ans.push(m - idx);
+    }
+
+    return ans;
+};
+```
+
+---
+
+## Dry Run
+
+```js
+spells = [5,1,3]
+potions = [1,2,3,4,5]
+success = 7
+```
+
+After sorting:
+
+```js
+potions = [1,2,3,4,5]
+```
+
+### Spell = 5
+
+```js
+need = ceil(7/5) = 2
+```
+
+First potion ≥ 2 is at index `1`.
+
+```js
+count = 5 - 1 = 4
+```
+
+### Spell = 1
+
+```js
+need = ceil(7/1) = 7
+```
+
+No potion ≥ 7.
+
+```js
+count = 0
+```
+
+### Spell = 3
+
+```js
+need = ceil(7/3) = 3
+```
+
+First potion ≥ 3 is at index `2`.
+
+```js
+count = 5 - 2 = 3
+```
+
+Answer:
+
+```js
+[4,0,3]
+```
+
+---
+
+## Time Complexity
+
+* Sorting potions: **O(m log m)**
+* For each spell, binary search: **O(log m)**
+* Total:
+
+[
+O(m \log m + n \log m)
+]
+
+---
+
+## Space Complexity
+
+[
+O(1)
+]
+
+(ignoring the output array)
+
+Including output array:
+
+[
+O(n)
+]
+
+### Pattern
+
+✅ **Sort + Binary Search (Lower Bound)**
+✅ Frequently asked in interviews and LeetCode Medium problems.

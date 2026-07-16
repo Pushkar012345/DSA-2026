@@ -1,0 +1,40 @@
+# LeetCode 977 – Squares of a Sorted Array
+
+**Pattern:** Two Pointers
+
+### Trick
+
+* Largest square is always at either **start** or **end**.
+* Compare `Math.abs(nums[start])` and `Math.abs(nums[end])`.
+* Put the larger square at the **last index** of the answer array.
+* Move that pointer.
+* Fill answer **from right to left**.
+
+### Steps
+
+1. `start = 0`, `end = n - 1`
+2. Create `ans[n]`
+3. Loop `i = n-1 → 0`
+4. Compare absolute values
+5. Store larger square in `ans[i]`
+6. Move corresponding pointer
+7. Return `ans`
+
+### Complexity
+
+* **Time:** `O(n)`
+* **Space:** `O(n)`
+
+### Remember
+
+✅ Compare **absolute values**, not actual values.
+
+```js
+if (Math.abs(nums[start]) > Math.abs(nums[end]))
+```
+
+✅ Fill result **from end → start**.
+
+### Pattern Recognition
+
+**Sorted array + negatives & positives + need O(n)** → **Two Pointers**.

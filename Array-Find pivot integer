@@ -1,0 +1,77 @@
+## Pivot Integer — Prefix Sum Pattern
+
+### Problem
+
+Find `x` such that:
+
+```
+1 + 2 + ... + x = x + (x+1) + ... + n
+```
+
+Return `x`, else `-1`.
+
+---
+
+### Key Idea (Prefix Sum)
+
+Total sum:
+
+```
+total = n*(n+1)/2
+```
+
+For every `x`:
+
+```
+Left  = prefix[x]
+Right = total - prefix[x-1]
+```
+
+Condition:
+
+```
+prefix[x] == total - prefix[x-1]
+```
+
+---
+
+### Steps
+
+1. Build prefix sum array.
+2. Calculate total sum.
+3. Check each `x`.
+4. Return pivot if left == right.
+
+---
+
+### Code
+
+```javascript
+var pivotInteger = function(n) {
+    let total = n * (n + 1) / 2;
+    let left = 0;
+
+    for(let x = 1; x <= n; x++) {
+        left += x;
+
+        let right = total - (left - x);
+
+        if(left === right) return x;
+    }
+
+    return -1;
+};
+```
+
+---
+
+### Complexity
+
+```
+Time: O(n)
+Space: O(1)
+```
+
+### Pattern:
+
+**Balance/Pivot problems → Total Sum + Prefix Sum** ✅

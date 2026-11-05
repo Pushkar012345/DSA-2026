@@ -1,0 +1,26 @@
+var findTheDistanceValue = function(arr1, arr2, d) {
+    arr2.sort((a, b) => a - b);
+    let ans = 0;
+
+    for (let num of arr1) {
+        let left = 0, right = arr2.length;
+
+        while (left < right) {
+            let mid = left + Math.floor((right - left) / 2);
+
+            if (arr2[mid] < num - d)
+                left = mid + 1;
+            else
+                right = mid;
+        }
+
+        let idx = left;
+
+        if (idx < arr2.length && arr2[idx] <= num + d)
+            continue; // Invalid
+        else
+            ans++;
+    }
+
+    return ans;
+};
